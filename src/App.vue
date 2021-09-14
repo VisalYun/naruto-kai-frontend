@@ -1,30 +1,70 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
+  <the-header></the-header>
   <router-view/>
+  <the-footer></the-footer>
 </template>
 
+<script>
+import TheHeader from './components/layouts/TheHeader.vue'
+import TheFooter from './components/layouts/TheFooter.vue'
+
+export default {
+  components: {
+    TheHeader,
+    TheFooter
+  }
+}
+</script>
+
+    TheFooter
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+* {
+  box-sizing: border-box;
 }
 
-#nav {
-  padding: 30px;
+html {
+  font-family: "Roboto", sans-serif;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+body {
+  margin: 0;
+  background-color: #e8ac4d;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+h1,h2,h3,h4,h5,h6,p{
+  margin: 0.5em 0;
+}
+
+hr { 
+    display: block; 
+    height: 1px;
+    border: 0; 
+    border-top: 1px solid #000;
+    margin: 1em 0; 
+    padding: 0; 
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #333; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #000; 
 }
 </style>

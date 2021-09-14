@@ -1,5 +1,8 @@
 import { createStore } from 'vuex'
 
+import movieModule from './Modules/Movies/index'
+import ArcModule from './Modules/Arcs/index'
+
 export default createStore({
   state: {
   },
@@ -8,5 +11,7 @@ export default createStore({
   actions: {
   },
   modules: {
+    movies: movieModule,
+    arcs: ArcModule
   }
 })
