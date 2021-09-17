@@ -1,6 +1,8 @@
 <template>
   <the-header></the-header>
-  <router-view/>
+  <div class="content">
+      <router-view :key="$route.fullPath"/>
+  </div>
   <the-footer></the-footer>
 </template>
 
@@ -26,11 +28,17 @@ export default {
 
 html {
   font-family: "Roboto", sans-serif;
+  position: relative;
+  min-height: 100vh;
 }
 
 body {
   margin: 0;
   background-color: #e8ac4d;
+}
+
+.content{
+  margin-bottom: 10em;
 }
 
 h1,h2,h3,h4,h5,h6,p{

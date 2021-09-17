@@ -1,8 +1,14 @@
 <template>
     <div class="this-episode">
-        <video id="videoPlayer" controls autoplay>
+        <!-- <video id="videoPlayer" controls autoplay>
             <source src="http://192.168.1.25:3000/video" type="video/mp4" />
-        </video>
+        </video> -->
+        <iframe
+            class="video"
+            frameborder="0" 
+            :src="video_url" 
+            allowfullscreen 
+        ></iframe>
         <div class="this-info">
             <h1>Ep{{episode}}: {{title}}</h1>
             <router-link :to="'/arc/'+arcId">
@@ -16,18 +22,19 @@
 
 <script>
 export default {
-    props: ['arc', 'arcId', 'thumbnail', 'episode', 'title', 'description'],
+    props: ['arc', 'arcId', 'thumbnail', 'episode', 'title', 'description', 'video_url'],
 }
 </script>
 
 <style scoped>
 .this-episode{
     width: 75%;
+    margin-right: 2em;
 }
-.this-episode video{
+.this-episode .video{
     display: block;
     width: 100%;
-    height: 75%;
+    height: 75vh;
 }
 a{
     text-decoration: none;
@@ -42,12 +49,12 @@ a p{
     }
 }
 @media screen and (max-width: 767px) and (orientation: portrait) {
-    .this-episode video{
+    .this-episode .video{
         height: 40vh;
     }
 }
 @media screen and (max-width: 767px) and (orientation: landscape) {
-    .this-episode video{
+    .this-episode .video{
         height: 100vh;
     }
 }

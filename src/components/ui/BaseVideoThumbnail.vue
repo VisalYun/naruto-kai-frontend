@@ -82,6 +82,12 @@ h3{
     margin: .2em 0;
 }
 
+@media screen and (width: 1024px) {
+    .video-thumbnail{
+        width: 35vw;
+    }
+}
+
 @media screen and (max-width: 1023px) {
     .video-thumbnail{
         width: 43vw;

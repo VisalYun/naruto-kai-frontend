@@ -9,8 +9,8 @@
             <p>Naruto Kai is a fan project dedicated to removing filler, padding and any other executive-minded nonsense that made the Naruto animated series the mess that it is.</p>
         </div>
         <div class="contact">
-            <p><b>Official Site: </b><a href="https://www.reddit.com/r/Naruto/comments/91wdjv/naruto_kai_ultimate_subbed_edition/" target="_blank">Naruto Kai Reddit Site</a></p>
-            <p>GitHub Repo: url</p>
+            <p><b>Credit: </b><a href="https://www.reddit.com/r/Naruto/comments/91wdjv/naruto_kai_ultimate_subbed_edition/" target="_blank">Naruto Kai Reddit Site</a></p>
+            <p><b>GitHub Repo: </b><a href="https://github.com/YunVisal/naruto-kai-frontend" target="_blank">Naruto Kai GitHub</a></p>
         </div>
     </footer>
 </template>
@@ -25,6 +25,9 @@ footer{
     color: white;
     background-color: #195098;
     margin-top: 2em;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 
 footer .info{

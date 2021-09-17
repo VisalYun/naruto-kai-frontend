@@ -8,11 +8,11 @@ export default {
     episodes: (state) => (start, end) => {
         const episodes = []
         for(let i=start; i<=end; i++){
-            episodes.push(state.movies.find(episode => episode.id === i))
+            episodes.push(state.movies.find(episode => Number(episode.episode) === i))
         }
         return episodes
     },
     episode: (state) => (id) =>{
-        return state.movies.find(episode => episode.id === id)
+        return state.movies.find(episode => Number(episode.episode) === id)
     },
 }

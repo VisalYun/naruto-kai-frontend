@@ -26,7 +26,7 @@ export default {
     computed: {
         imgStyle(){
             return {
-                backgroundImage:'url(' + this.thumbnail_url + ')',
+                backgroundImage:"url('http://localhost:3000/thumbnail/1.jpg')",
                 height: this.height + 'em'
             }
         },

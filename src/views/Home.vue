@@ -1,13 +1,13 @@
 <template>
   <div class="home">
     <section class="container">
-      <base-section v-if="resumeEpisode" title="Contiue Watching">
+      <base-section v-if="resumeEpisode && !loading" title="Contiue Watching">
         <base-video-thumbnail
-            :key="resumeEpisode.id"
-            :id="resumeEpisode.id"
-            :episode="resumeEpisode.episode"
+            :key="resumeEpisode.episode"
+            :id="Number(resumeEpisode.episode)"
+            :episode="Number(resumeEpisode.episode)"
             :title="resumeEpisode.title"
-            :arc="resumeEpisode.arc"
+            :arc="Number(resumeEpisode.arc)"
             :thumbnail_url="resumeEpisode.thumbnail_url"
             :duration="resumeEpisode.duration"
         >
@@ -19,11 +19,11 @@
       <base-section title="Naruto" v-else-if="hasEpisode">
         <base-video-thumbnail
           v-for="movie in fetchedFirstPart"
-          :key="movie.id"
-          :id="movie.id"
-          :episode="movie.episode"
+          :key="movie.episode"
+          :id="Number(movie.episode)"
+          :episode="Number(movie.episode)"
           :title="movie.title"
-          :arc="movie.arc"
+          :arc="Number(movie.arc)"
           :thumbnail_url="movie.thumbnail_url"
           :duration="movie.duration"
         >
@@ -37,11 +37,11 @@
       <base-section title="Naruto Shippuden" v-else-if="hasEpisode">
         <base-video-thumbnail
           v-for="movie in fetchedSecondPart"
-          :key="movie.id"
-          :id="movie.id"
-          :episode="movie.episode"
+          :key="movie.episode"
+          :id="Number(movie.episode)"
+          :episode="Number(movie.episode)"
           :title="movie.title"
-          :arc="movie.arc"
+          :arc="Number(movie.arc)"
           :thumbnail_url="movie.thumbnail_url"
           :duration="movie.duration"
         >
@@ -69,28 +69,32 @@ export default {
       return this.$store.getters['movies/hasMovie'];
     },
     fetchedFirstPart() {
-      return this.$store.getters["movies/episodes"](1, 6);
+      return this.$store.getters["movies/episodes"](1, 8);
     },
     fetchedSecondPart() {
-      return this.$store.getters["movies/episodes"](7, 10);
+      return this.$store.getters["movies/episodes"](28, 35);
     },
   },
   async created() {
     if(localStorage.episode){
-      this.resumeEpisode = JSON.parse(localStorage.episode)
+      this.resumeEpisode = JSON.parse(localStorage.episode)[0]
     }
-    return await this.loadData()
+    if(this.$store.getters['movies/hasMovie']){
+      return
+    }
+    return this.loadData()
   },
   methods: {
     async loadData() {
       this.loading=true
       try {
         const episodes = await this.$store.dispatch("movies/fetchMovie");
-        const arcs = await this.$store.dispatch("arcs/fetchArc");
+        const arcs = await this.$store.dispatch("arcs/fetchArcs");
         this.loading=false
+        localStorage.numberOfEpisode = this.$store.getters["movies/movies"].length
         return [episodes, arcs];
       } catch (err) {
-        this.error = err.message || "Something went wrong!";
+        window.location.href = "/notFound"
       }
     },
   },

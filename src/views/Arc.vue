@@ -1,6 +1,7 @@
 <template>
     <div class="arc">
-        <base-section :title="arc.title">
+        <h1 v-if="loading">Loading...</h1>
+        <base-section :title="arc.title" v-else>
             <p>{{ arc.description }}</p>
             <div class="action">
                 <router-link to="/naruto" v-if="!prevArc"></router-link> <!-- Flex Helper -->
@@ -12,17 +13,18 @@
         <base-section title="Episode">
             <base-episode-panel
                 v-for="episode in episodes"
-                :key="episode.id"
-                :width="30"
-                :height="10"
+                :key="episode.episode"
+                :thumbnail_width="20"
+                :thumbnail_height="10"
+                :info_width="100"
                 :bottom="0.5"
                 :margin="1"
                 display="block"
-                :id="episode.id"
-                :episode="episode.episode"
+                :id="Number(episode.episode)"
+                :episode="Number(episode.episode)"
                 :title="episode.title"
                 :arc="arc.title"
-                :arcId="id"
+                :arcId="Number(id)"
                 :thumbnail="episode.thumbnail_url"
                 :description="episode.description"
             ></base-episode-panel>
@@ -40,37 +42,91 @@ export default {
     },
     data(){
         return{
-            loading: false
+            loading: false,
+            Arc: null,
+            NextArc: null,
+            PrevArc: null,
+            Episodes: []
         }
+    },
+    watch: {
+        $route(){
+            this.loadData()
+        },
     },
     computed: {
         arc(){
+            if(this.$store.getters['arcs/hasArc']){
+                return this.$store.getters['arcs/thisArc'](Number(this.id));
+            }
+            return this.Arc;
+        },
+        nextArc(){
+            if(this.$store.getters['arcs/hasArc']){
+                return this.$store.getters['arcs/thisArc'](Number(this.id)+1);
+            }
+            return this.NextArc;
+        },
+        prevArc(){
+            if(this.$store.getters['arcs/hasArc']){
+                return this.$store.getters['arcs/thisArc'](Number(this.id)-1);
+            }
+            return this.PrevArc;
+        },
+        episodes(){
+            if(this.$store.getters['movies/hasMovie']){
+                const episodes = []
+                this.arc.episode.forEach(async(ep) => {
+                    const episode = this.$store.getters['movies/episode'](Number(ep))
+                    episodes.push(episode)
+                })
+                return episodes
+            }
+            return this.Episodes
+        }
+    },
+    created(){
+        if(this.$store.getters['arcs/hasArc']){
+            return;
+        }
+        this.loadData()
+    },
+    methods: {
+        async loadData(){
             try{
-                const arc = this.$store.getters['arcs/thisArc'](Number(this.id))
-                console.log(arc)
-                if(arc){
-                    return arc
-                }
-                throw new Error('Arc is not defined')
+                this.loading = true
+                this.Arc = await this.fetchArc()
+                this.NextArc = await this.fetchNextArc()
+                this.PrevArc = await this.fetchPrevArc()
+                await this.fetchEpisodes()
+                this.loading = false
             }catch(ex){
                 window.location.href = "/notFound"
             }
         },
-        nextArc(){
-            return this.$store.getters['arcs/thisArc'](Number(this.id)+1)
+        async fetchArc(){
+            const arc = await this.$store.dispatch("arcs/fetchArc", Number(this.id));
+            return arc.arcs;
         },
-        prevArc(){
-            return this.$store.getters['arcs/thisArc'](Number(this.id)-1)
+        async fetchNextArc(){
+            const arc = await this.$store.dispatch("arcs/fetchArc", Number(this.id)+1);
+            return arc.arcs;
         },
-        episodes(){
-            const episodes = []
-            this.arc.episodes.forEach(ep => {
-               const episode = this.$store.getters['movies/episode'](ep)
-               episodes.push(episode)
+        async fetchPrevArc(){
+            const arc = await this.$store.dispatch("arcs/fetchArc", Number(this.id)-1);
+            return arc.arcs;
+        },
+        async fetchEpisodes(){
+            this.arc.episode.forEach(async(ep) => {
+                const episode = await this.$store.dispatch(
+                    "movies/fetchEpisode",
+                    ep
+                )
+                this.Episodes.push(episode.episodes[0])
+                this.Episodes.sort(function(a, b) {return Number(a.episode)-Number(b.episode)})
             })
-            return episodes
         }
-    },
+    }
 }
 </script>
 

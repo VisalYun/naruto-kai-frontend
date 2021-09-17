@@ -2,7 +2,7 @@
     <base-section title="Episode List">
         <div class="episode-list">
             <base-button
-                v-for="index in episodeListLength" 
+                v-for="index in Number(episodeListLength)" 
                 :key="index"
                 :link="'/episode/'+index" 
                 :width="2"
@@ -15,7 +15,12 @@
 export default {
     computed: {
         episodeListLength(){
-            return this.$store.getters['movies/movies'].length
+            if(this.$store.getters['movies/movies'].length > 0){
+                return this.$store.getters['movies/movies'].length
+            }
+            else{
+                return localStorage.numberOfEpisode
+            }
         }
     }
 }

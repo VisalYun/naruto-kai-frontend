@@ -1,65 +1,103 @@
 <template>
   <div class="next-episode">
     <base-section title="Up next">
+      <h1 v-if="isLoading">Loading...</h1>
       <base-episode-panel
-          :width="70"
-          :height="10"
-          :bottom="0.1"
-          :margin="0"
-          display="none"
-          :id="episode.id"
-          :episode="episode.episode"
-          :title="episode.title"
-          :arc="arc.title"
-          :arcId="arc.id"
-          :thumbnail="episode.thumbnail_url"
-          :description="episode.description"
+        v-else
+        :thumbnail_width="55"
+        :thumbnail_height="10"
+        :info_width="45"
+        :bottom="0.1"
+        :margin="0"
+        display="none"
+        :id="Number(episode.episode)"
+        :episode="Number(episode.episode)"
+        :title="episode.title"
+        :arc="arc.title"
+        :arcId="Number(arc.id)"
+        :thumbnail="episode.thumbnail_url"
+        :description="episode.description"
       ></base-episode-panel>
     </base-section>
   </div>
 </template>
 
 <script>
-import BaseEpisodePanel from '../ui/BaseEpisodePanel.vue'
+import BaseEpisodePanel from "../ui/BaseEpisodePanel.vue";
 
 export default {
-    props: ['id'],
-    components: {
-        BaseEpisodePanel
-    },
-    computed: {
-      episode(){
-        const episode = this.$store.getters['movies/episode'](Number(this.id))
-        if(episode){
-          return episode
-        }
-        else if(this.$store.getters['movies/episode'](1)){
-          return this.$store.getters['movies/episode'](1)
-        }
-        return JSON.parse(localStorage.nextEpisode)
-      },
-      arc(){
-        const arc = this.$store.getters['arcs/thisArc'](this.episode.arc)
-        if(arc){
-          return arc
-        }
-        else{
-          return JSON.parse(localStorage.arc)
-        }
-      },
-    },
-    created(){
-      if(!this.episode || localStorage.nextEpisode.id == this.id+1){
-        return
-      }
-      localStorage.nextEpisode = JSON.stringify(this.episode)
-      localStorage.nextArc = JSON.stringify(this.arc)
+  props: ["id"],
+  components: {
+    BaseEpisodePanel,
+  },
+  data(){
+    return {
+      isLoading: false,
+      nextEpisode: null,
+      nextArc: null
     }
-}
+  },
+  watch: {
+    $route(){
+        this.loadData()
+    },
+  },
+  computed: {
+    episode() {
+      if(this.$store.getters['movies/hasMovie']){
+        return this.$store.getters['movies/episode'](Number(this.id));
+      }
+      return this.nextEpisode
+    },
+    arc() {
+      if(this.$store.getters['arcs/hasArc']){
+        return this.$store.getters['arcs/thisArc'](Number(this.episode.arc));
+      }
+      return this.nextArc
+    },
+  },
+  created() {
+    if(this.$store.getters['movies/hasMovie']){
+      return;
+    }
+    this.loadData()
+  },
+  methods: {
+    async loadData(){
+      try{
+        this.isLoading = true;
+        this.nextEpisode = await this.fetchEpisode();
+        this.nextArc = await this.fetchArc(this.nextEpisode.arc);
+        this.isLoading = false;
+      }catch(ex){
+        window.location.href = "/notFound"
+      }
+    },
+    async fetchArc(id) {
+      const arc = await this.$store.dispatch("arcs/fetchArc", id);
+      localStorage.nextArc = JSON.stringify(arc.arcs);
+      return arc.arcs;
+    },
+    async fetchEpisode() {
+      let episode = await this.$store.dispatch(
+        "movies/fetchEpisode",
+        this.id
+      );
+      if(episode.episodes.length == 0){
+        episode = await this.$store.dispatch(
+          "movies/fetchEpisode",
+          1
+        );
+      }
+      localStorage.nextEpisode = JSON.stringify(episode.episodes);
+      return episode.episodes[0];
+    },
+  },
+};
 </script>
 
 <style scoped>
-.next-episode{
-    width: 100%;
+.next-episode {
+  width: 100%;
 }
 </style>

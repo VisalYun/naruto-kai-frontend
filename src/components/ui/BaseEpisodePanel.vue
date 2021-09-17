@@ -1,15 +1,15 @@
 <template>
     <div class="ep" :style="{margin: margin+'em'}">
         <router-link :to="'/episode/'+id">
-            <div class="thumbnail" :style="{width: width+'%'}">
+            <div class="thumbnail" :style="{width: thumbnail_width+'%'}">
                 <base-thumbnail
                     :thumbnail_url="thumbnail"
                     duration="1:27:04"
-                    :height="height"
+                    :height="thumbnail_height"
                     :bottom="bottom"
                 ></base-thumbnail>
             </div>
-            <div class="info">
+            <div class="info" :style="{width: info_width+'%'}">
                 <h3>Ep{{episode}}: {{title}}</h3>
                 <router-link :to="'/arc/'+arcId">
                     <p>{{arc}}</p>
@@ -25,11 +25,15 @@ import BaseThumbnail from '../ui/BaseThumbnail.vue'
 
 export default {
     props: {
-        width: {
+        thumbnail_width: {
             type: Number,
             required: true
         }, 
-        height: {
+        thumbnail_height: {
+            type: Number,
+            required: true
+        },
+        info_width: {
             type: Number,
             required: true
         },
@@ -91,7 +95,6 @@ a{
     text-decoration: none;
     color: inherit;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex: 45%;
 }
@@ -107,22 +110,13 @@ a{
 
 @media screen and (max-width: 1024px) and (min-width: 768px){
     .ep a .thumbnail{
-        width: 100% !important;
+        width: 30% !important;
     }
     .ep{
         flex: 100%;
     }
-    .ep a .info .description{
-        display: block !important;
-    }
-}
-
-@media screen and (max-width: 767px) and (orientation: landscape){
-    .ep a .thumbnail{
-        width: 100% !important;
-    }
-    .ep{
-        flex: 100%;
+    .ep a .info{
+        width: 70% !important;
     }
     .ep a .info .description{
         display: block !important;
@@ -135,6 +129,9 @@ a{
         align-items: center;
     }
     .ep a .thumbnail{
+        width: 80% !important;
+    }
+    .ep a .info{
         width: 80% !important;
     }
     .ep a .info .description{
