@@ -1,6 +1,6 @@
 export default {
     movies(state){
-        return state.movies
+        return JSON.parse(JSON.stringify(state.movies))
     },
     hasMovie(state) {
         return state.movies && state.movies.length > 0

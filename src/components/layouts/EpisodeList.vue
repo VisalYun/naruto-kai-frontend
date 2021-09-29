@@ -2,7 +2,8 @@
     <base-section title="Episode List">
         <div class="episode-list">
             <base-button
-                v-for="index in Number(episodeListLength)" 
+                v-for="index in Number(episodeListLength)"
+                :isLink="true" 
                 :key="index"
                 :link="'/episode/'+index" 
                 :width="2"

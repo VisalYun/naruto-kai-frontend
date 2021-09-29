@@ -4,6 +4,9 @@ import Naruto from '../views/Naruto.vue'
 import NarutoShippuden from '../views/NarutoShippuden.vue'
 import Episode from '../views/Episode.vue'
 import Arc from '../views/Arc.vue'
+import Admin from '../views/Admin.vue'
+import EditEpisode from '../views/EditEpisode.vue'
+import EditArc from '../views//EditArc.vue'
 import NotFound from '../views/NotFound.vue'
 
 const routes = [
@@ -41,6 +44,23 @@ const routes = [
     path: '/arc/:id',
     name: 'Arc',
     component: Arc,
+    props: true
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin,
+  },
+  {
+    path: '/admin/episode/:id',
+    name: 'EditEpisode',
+    component: EditEpisode,
+    props: true
+  },
+  {
+    path: '/admin/arc/:id',
+    name: 'EditArc',
+    component: EditArc,
     props: true
   },
   {

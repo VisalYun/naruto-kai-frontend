@@ -52,12 +52,14 @@ export default {
   computed: {
     arc() {
       if(this.$store.getters['arcs/hasArc']){
+        localStorage.arc = JSON.stringify(this.$store.getters['arcs/thisArc'](Number(this.episode.arc)));
         return this.$store.getters['arcs/thisArc'](Number(this.episode.arc));
       }
       return this.thisArc;
     },
     episode() {
       if(this.$store.getters['movies/hasMovie']){
+        localStorage.episode = JSON.stringify(this.$store.getters['movies/episode'](Number(this.id)));
         return this.$store.getters['movies/episode'](Number(this.id));
       }
       return this.thisEpisode;

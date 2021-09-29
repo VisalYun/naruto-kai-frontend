@@ -1,24 +1,14 @@
 <template>
-  <div class="ep" :style="{ margin: margin + 'em' }">
-    <router-link :to="url + id">
-      <div class="thumbnail" :style="{ width: thumbnail_width + '%' }">
-        <base-thumbnail
-          :thumbnail_url="thumbnail"
-          :duration="duration"
-          :height="thumbnail_height"
-          :bottom="bottom"
-        ></base-thumbnail>
-      </div>
+  <div class="ep">
+    <router-link :to="'/admin/arc/' + id">
       <div class="info" :style="{ width: info_width + '%' }">
-        <h3>Ep{{ episode }}: {{ title }}</h3>
-        <router-link :to="'/arc/' + arcId">
-          <p>{{ arc }}</p>
-        </router-link>
+        <h3>{{ title }}</h3>
         <p class="description" :style="{ display: display }">
           {{ description }}
         </p>
       </div>
     </router-link>
+    <hr />
   </div>
 </template>
 
@@ -27,23 +17,7 @@ import BaseThumbnail from "../ui/BaseThumbnail.vue";
 
 export default {
   props: {
-    thumbnail_width: {
-      type: Number,
-      required: true,
-    },
-    thumbnail_height: {
-      type: Number,
-      required: true,
-    },
     info_width: {
-      type: Number,
-      required: true,
-    },
-    bottom: {
-      type: Number,
-      required: true,
-    },
-    margin: {
       type: Number,
       required: true,
     },
@@ -51,35 +25,11 @@ export default {
       type: String,
       required: true,
     },
-    url: {
-        type: String,
-        required: true,
-    },
     id: {
       type: Number,
       required: true,
     },
-    episode: {
-      type: Number,
-      required: true,
-    },
     title: {
-      type: String,
-      required: true,
-    },
-    arc: {
-      type: String,
-      required: true,
-    },
-    arcId: {
-      type: Number,
-      required: true,
-    },
-    duration: {
-      type: String,
-      required: true,
-    },
-    thumbnail: {
       type: String,
       required: true,
     },
@@ -108,9 +58,6 @@ a {
   align-items: center;
   flex: 45%;
 }
-.ep a .thumbnail {
-  position: relative;
-}
 .ep a .info {
   margin: 1em;
 }
@@ -119,9 +66,6 @@ a {
 }
 
 @media screen and (max-width: 1024px) and (min-width: 768px) {
-  .ep a .thumbnail {
-    width: 30% !important;
-  }
   .ep {
     flex: 100%;
   }
@@ -137,9 +81,6 @@ a {
   a {
     flex-direction: column;
     align-items: center;
-  }
-  .ep a .thumbnail {
-    width: 80% !important;
   }
   .ep a .info {
     width: 80% !important;

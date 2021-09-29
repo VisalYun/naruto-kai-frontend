@@ -10,11 +10,13 @@
         :bottom="0.1"
         :margin="0"
         display="none"
+        url="/episode/"
         :id="Number(episode.episode)"
         :episode="Number(episode.episode)"
         :title="episode.title"
         :arc="arc.title"
         :arcId="Number(arc.id)"
+        :duration="episode.duration"
         :thumbnail="episode.thumbnail_url"
         :description="episode.description"
       ></base-episode-panel>

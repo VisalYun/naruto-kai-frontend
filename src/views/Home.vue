@@ -29,7 +29,7 @@
         >
         </base-video-thumbnail>
       </base-section>
-      <base-button link="/naruto" :width="10">Load More &#8594;</base-button>
+      <base-button :isLink="true" link="/naruto" :width="10">Load More &#8594;</base-button>
     </section>
 
     <section class="container">
@@ -47,7 +47,7 @@
         >
         </base-video-thumbnail>
       </base-section>
-      <base-button link="/naruto-shippuden" :width="10"
+      <base-button :isLink="true" link="/naruto-shippuden" :width="10"
         >Load More &#8594;</base-button
       >
     </section>
@@ -77,7 +77,12 @@ export default {
   },
   async created() {
     if(localStorage.episode){
-      this.resumeEpisode = JSON.parse(localStorage.episode)[0]
+      if(JSON.parse(localStorage.episode)[0]){
+        this.resumeEpisode = JSON.parse(localStorage.episode)[0]
+      }
+      else{
+        this.resumeEpisode = JSON.parse(localStorage.episode)
+      }
     }
     if(this.$store.getters['movies/hasMovie']){
       return
