@@ -2,7 +2,7 @@
   <div class="ep">
     <router-link :to="'/admin/arc/' + id">
       <div class="info" :style="{ width: info_width + '%' }">
-        <h3>{{ title }}</h3>
+        <h3>{{ id }}. {{ title }}</h3>
         <p class="description" :style="{ display: display }">
           {{ description }}
         </p>

@@ -20,7 +20,7 @@ export default {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQ5NGM5NmMyM2ZiNTdjNjEzNmJkYzAiLCJuYW1lIjoiYWRtaW4iLCJpYXQiOjE2MzI3Mjc3NzF9.JNOMBIHgQxjp7IaMfUv5m4DYJvQzgA6KcMeowLNAHAk'
+                'x-auth-token': localStorage.getItem('token')
             },
             body: JSON.stringify(arc)
         })
